@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>My Gallery</title>
+<style>
+  body {
+    margin: 0;
+    background: linear-gradient(to right, #1a0000, #400000);
+    font-family: 'Segoe UI', sans-serif;
+    color: #fff;
+  }
+  header {
+    text-align: center;
+    padding: 30px;
+    background: linear-gradient(45deg, #ff4500, #ff9800);
+    box-shadow: 0 5px 15px rgba(255, 69, 0, 0.6);
+  }
+  header h1 {
+    margin: 0;
+    font-size: 3em;
+    color: #fff;
+    text-shadow: 0 0 20px #ffeb3b, 0 0 40px #ff5722;
+    animation: flameGlow 2s infinite alternate;
+  }
+  @keyframes flameGlow {
+    from {
+      text-shadow: 0 0 10px #ff9800;
+    }
+    to {
+      text-shadow: 0 0 25px #ffc107, 0 0 40px #ff5722;
+    }
+  }
+
+  .gallery {
+    max-width: 1000px;
+    margin: 40px auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    padding: 0 20px;
+  }
+  .gallery-item {
+    position: relative;
+    border: 4px solid #ff5722;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 0 15px #ff5722;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .gallery-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px #ff9800, 0 0 35px #ff5722;
+  }
+  .gallery-item img {
+    width: 100%;
+    display: block;
+    border-radius: 15px;
+  }
+
+  /* Lightbox Styles */
+  #lightbox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(30, 0, 0, 0.95);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+  }
+  #lightbox.active {
+    display: flex;
+  }
+  #lightbox img {
+    max-width: 90vw;
+    max-height: 80vh;
+    border: 8px solid #ff5722;
+    border-radius: 20px;
+    box-shadow:
+      0 0 20px #ff5722,
+      0 0 40px #ff9800,
+      0 0 60px #ffc107;
+    animation: flicker 1.5s infinite alternate;
+  }
+  @keyframes flicker {
+    0% { box-shadow:
+      0 0 15px #ff5722,
+      0 0 30px #ff9800,
+      0 0 45px #ffc107; }
+    100% { box-shadow:
+      0 0 25px #ff5722,
+      0 0 50px #ff9800,
+      0 0 70px #ffc107; }
+  }
+
+  #lightbox:before {
+    content: '×';
+    position: absolute;
+    top: 25px;
+    right: 30px;
+    font-size: 3rem;
+    color: #ffcc00;
+    cursor: pointer;
+    text-shadow: 0 0 10px #ffc107;
+    user-select: none;
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>Welcome to the collection of memories</h1>
+<div style="text-align: center; margin-top: 20px;">
+  <a href="Homepage.html" style="
+    display: inline-block;
+    padding: 10px 20px;
+    background: linear-gradient(to right, #ff5722, #ff9800);
+    color: white;
+    font-weight: bold;
+    border-radius: 10px;
+    text-decoration: none;
+    box-shadow: 0 0 10px #ff5722;
+    transition: 0.3s;
+  " onmouseover="this.style.boxShadow='0 0 20px #ff9800'" onmouseout="this.style.boxShadow='0 0 10px #ff5722'">
+The way back home..
+  </a>
+</div>
+</header>
+<div class="gallery">
+  <div class="gallery-item"><img src="https://i.imgur.com/gHHzNOE.png" alt="Elden Ring" /></div>
+  <div class="gallery-item"><img src="https://i.imgur.com/vDAjYdC.png" alt="Ghost of Tsushima"/></div>
+  <div class="gallery-item"><img src="https://i.imgur.com/eHOKhsf.png" alt="FH5" /></div>
+  <div class="gallery-item"><img src="https://i.imgur.com/RSH1iK4.png" alt="God of War" /></div>
+  <div class="gallery-item"><img src="https://i.imgur.com/rjTBkXq.png" alt="wuthering Waves"/></div>
+
+<div id="lightbox"></div>
+
+<script>
+  const lightbox = document.getElementById('lightbox');
+  const galleryItems = document.querySelectorAll('.gallery-item img');
+
+  galleryItems.forEach(img => {
+    img.addEventListener('click', () => {
+      lightbox.classList.add('active');
+      const imgClone = img.cloneNode();
+      lightbox.innerHTML = '';
+      lightbox.appendChild(imgClone);
+    });
+  });
+
+  lightbox.addEventListener('click', (e) => {
+    if (e.target !== e.currentTarget) return;
+    lightbox.classList.remove('active');
+  });
+
+  // Also close lightbox on pressing Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+      lightbox.classList.remove('active');
+    }
+  });
+</script>
+
+</body>
+</html>
